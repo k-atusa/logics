@@ -2,6 +2,7 @@ import { useState, useMemo } from 'react'
 import { TruthTable } from './components/TruthTable'
 import { KarnaughMap } from './components/KarnaughMap'
 import { ExpressionInput } from './components/ExpressionInput'
+import { CircuitViewer } from './components/CircuitViewer'
 import { minimize, formatTerm } from './logic/minimizer'
 
 function App() {
@@ -89,6 +90,7 @@ function App() {
             primeImplicants={primeImplicants}
             numVars={numVars}
           />
+          <CircuitViewer primeImplicants={primeImplicants} numVars={numVars} />
         </div>
       </main>
 
