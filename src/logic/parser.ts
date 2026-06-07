@@ -1,3 +1,37 @@
+function resolveNegations(expr: string): string {
+  let s = expr;
+  let i = 0;
+  while (i < s.length) {
+    if (s[i] === "'") {
+      if (i > 0 && s[i - 1] === ')') {
+        let depth = 1;
+        let j = i - 2;
+        while (j >= 0 && depth > 0) {
+          if (s[j] === ')') depth++;
+          else if (s[j] === '(') depth--;
+          j--;
+        }
+        if (depth === 0) {
+          const start = j + 1;
+          const group = s.substring(start, i);
+          s = s.substring(0, start) + "!" + group + s.substring(i + 1);
+          i = start + 1;
+        } else {
+          throw new Error("Mismatched parentheses");
+        }
+      } else if (i > 0 && /[A-D01]/.test(s[i - 1])) {
+        const varChar = s[i - 1];
+        s = s.substring(0, i - 1) + "!" + varChar + s.substring(i + 1);
+      } else {
+        throw new Error("Invalid use of ' operator");
+      }
+    } else {
+      i++;
+    }
+  }
+  return s;
+}
+
 // Helper to validate and convert expression to JS evaluatable string
 export function parseExpression(expr: string, numVars: number = 4): number[] {
   let cleanExpr = expr.toUpperCase().replace(/\s+/g, '');
@@ -11,28 +45,14 @@ export function parseExpression(expr: string, numVars: number = 4): number[] {
   // This regex matches cases where an AND is implied.
   cleanExpr = cleanExpr.replace(/([A-D01)'])(?=[A-D01(~])/g, '$1&');
 
+  // Resolve postfix negations (')
+  cleanExpr = resolveNegations(cleanExpr);
+
   // Replace boolean operators with JS bitwise operators for 0/1 evaluation
   cleanExpr = cleanExpr
     .replace(/\+/g, '|')
     .replace(/\*/g, '&')
-    .replace(/~/g, '!')
-    .replace(/'/g, ''); // We will handle ' (postfix NOT) differently
-
-  // Handle postfix NOT (')
-  // e.g., A' -> !A, (A&B)' -> !(A&B)
-  // This is tricky with simple replace. Let's do a small parser or just replace variables + ' with !variable.
-  // Actually, standardizing NOT: replace A' with (!A). Replace )' with something else.
-  // Instead of regex, let's write a simple token replacement or just use JS evaluation.
-  // Let's do it right. We can evaluate postfix by replacing X' with (!X) but X could be a group.
-  
-  // Alternative: write a simple recursive descent parser, or just handle simple variable NOTs:
-  // For A', B', C', D' -> (!A), (!B), (!C), (!D)
-  cleanExpr = cleanExpr.replace(/([A-D01])'/g, '(!$1)');
-  
-  // If there are group NOTs like (A|B)', it's more complex. We can use a loop to resolve (...)'.
-  while (cleanExpr.includes(")'")) {
-    cleanExpr = cleanExpr.replace(/\(([^()]+)\)'/g, '(!($1))');
-  }
+    .replace(/~/g, '!');
 
   const minterms: number[] = [];
   const maxVal = Math.pow(2, numVars);
