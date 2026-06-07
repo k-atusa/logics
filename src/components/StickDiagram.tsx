@@ -12,7 +12,7 @@ const StickNMOS = ({ x, y, label }: { x: number, y: number, label: string }) => 
   <g transform={`translate(${x}, ${y})`} className="stroke-2 fill-none">
     <line x1={-15} y1={0} x2={15} y2={0} className="stroke-green-500 stroke-[6px]" />
     <line x1={0} y1={-15} x2={0} y2={15} className="stroke-red-500 stroke-[4px]" />
-    <text x={0} y={25} className="text-[10px] fill-current stroke-none text-center" textAnchor="middle">{label}</text>
+    <text x={-8} y={12} className="text-[10px] fill-current stroke-none" textAnchor="end">{label}</text>
     <rect x={-17} y={-2} width={4} height={4} className="fill-black stroke-none" />
     <rect x={13} y={-2} width={4} height={4} className="fill-black stroke-none" />
     <line x1={-15} y1={0} x2={0} y2={-20} className="stroke-blue-500" />
@@ -24,7 +24,7 @@ const StickPMOS = ({ x, y, label }: { x: number, y: number, label: string }) => 
   <g transform={`translate(${x}, ${y})`} className="stroke-2 fill-none">
     <line x1={-15} y1={0} x2={15} y2={0} className="stroke-orange-500 stroke-[6px]" />
     <line x1={0} y1={-15} x2={0} y2={15} className="stroke-red-500 stroke-[4px]" />
-    <text x={0} y={25} className="text-[10px] fill-current stroke-none text-center" textAnchor="middle">{label}</text>
+    <text x={-8} y={12} className="text-[10px] fill-current stroke-none" textAnchor="end">{label}</text>
     <rect x={-17} y={-2} width={4} height={4} className="fill-black stroke-none" />
     <rect x={13} y={-2} width={4} height={4} className="fill-black stroke-none" />
     <line x1={-15} y1={0} x2={0} y2={-20} className="stroke-blue-500" />
