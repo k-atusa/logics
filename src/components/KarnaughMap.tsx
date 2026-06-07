@@ -23,6 +23,14 @@ const COLORS = [
 ];
 
 export const KarnaughMap: React.FC<KarnaughMapProps> = ({ minterms, dontCares, primeImplicants, numVars }) => {
+  const sortedPrimeImplicants = React.useMemo(() => {
+    return [...primeImplicants].sort((a, b) => {
+      const strA = formatTerm(a);
+      const strB = formatTerm(b);
+      return strA.localeCompare(strB);
+    });
+  }, [primeImplicants]);
+
   if (numVars !== 4) {
     return (
       <Card className="bg-card border-border/50">
@@ -55,7 +63,7 @@ export const KarnaughMap: React.FC<KarnaughMapProps> = ({ minterms, dontCares, p
   };
 
   const getCoveringGroups = (m: number) => {
-    return primeImplicants
+    return sortedPrimeImplicants
       .map((pi, idx) => ({ pi, idx }))
       .filter(({ pi }) => covers(pi, m, numVars));
   };
@@ -127,12 +135,12 @@ export const KarnaughMap: React.FC<KarnaughMapProps> = ({ minterms, dontCares, p
         <div className="bg-muted/30 border border-border/50 p-4 rounded-md">
           <h3 className="text-sm font-semibold mb-3 text-muted-foreground">Minimized Expression (SOP)</h3>
           <div className="flex flex-wrap gap-2 items-center">
-            {primeImplicants.length === 0 ? (
+            {sortedPrimeImplicants.length === 0 ? (
               <Badge variant="secondary" className="font-mono text-sm">0</Badge>
-            ) : primeImplicants.length === 1 && primeImplicants[0].every(v => v === -1) ? (
+            ) : sortedPrimeImplicants.length === 1 && sortedPrimeImplicants[0].every(v => v === -1) ? (
               <Badge variant="secondary" className="font-mono text-sm bg-green-500/20 text-green-500 hover:bg-green-500/30">1</Badge>
             ) : (
-              primeImplicants.map((pi, idx) => (
+              sortedPrimeImplicants.map((pi, idx) => (
                 <React.Fragment key={idx}>
                   <Badge
                     variant="outline"
@@ -141,7 +149,7 @@ export const KarnaughMap: React.FC<KarnaughMapProps> = ({ minterms, dontCares, p
                   >
                     {formatTerm(pi)}
                   </Badge>
-                  {idx < primeImplicants.length - 1 && <span className="text-muted-foreground font-mono">+</span>}
+                  {idx < sortedPrimeImplicants.length - 1 && <span className="text-muted-foreground font-mono">+</span>}
                 </React.Fragment>
               ))
             )}

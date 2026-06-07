@@ -5,12 +5,17 @@ import { Button } from './ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from './ui/card';
 
 interface ExpressionInputProps {
+  value: string;
   onParsed: (minterms: number[]) => void;
 }
 
-export const ExpressionInput: React.FC<ExpressionInputProps> = ({ onParsed }) => {
-  const [expr, setExpr] = useState('');
+export const ExpressionInput: React.FC<ExpressionInputProps> = ({ value, onParsed }) => {
+  const [expr, setExpr] = useState(value);
   const [error, setError] = useState('');
+
+  React.useEffect(() => {
+    setExpr(value);
+  }, [value]);
 
   const handleParse = () => {
     if (!expr.trim()) {

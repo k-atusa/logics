@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react'
 import { TruthTable } from './components/TruthTable'
 import { KarnaughMap } from './components/KarnaughMap'
 import { ExpressionInput } from './components/ExpressionInput'
-import { minimize } from './logic/minimizer'
+import { minimize, formatTerm } from './logic/minimizer'
 
 function App() {
   const [minterms, setMinterms] = useState<number[]>([]);
@@ -18,6 +18,16 @@ function App() {
       return [];
     }
   }, [minterms, dontCares, numVars]);
+
+  // Format the minimized expression as an alphabetically sorted string
+  const currentExpressionString = useMemo(() => {
+    if (primeImplicants.length === 0) return '';
+    if (primeImplicants.length === 1 && primeImplicants[0].every(v => v === -1)) return '1';
+    
+    const terms = primeImplicants.map(pi => formatTerm(pi));
+    terms.sort((a, b) => a.localeCompare(b));
+    return terms.join(' + ');
+  }, [primeImplicants]);
 
   const handleExpressionParsed = (newMinterms: number[]) => {
     setMinterms(newMinterms);
@@ -39,7 +49,7 @@ function App() {
       </header>
 
       <main className="max-w-5xl mx-auto space-y-6">
-        <ExpressionInput onParsed={handleExpressionParsed} />
+        <ExpressionInput value={currentExpressionString} onParsed={handleExpressionParsed} />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
           <TruthTable
