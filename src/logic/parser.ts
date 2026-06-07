@@ -58,10 +58,10 @@ export function parseExpression(expr: string, numVars: number = 4): number[] {
   const maxVal = Math.pow(2, numVars);
 
   for (let i = 0; i < maxVal; i++) {
-    const A = (i & 8) ? 1 : 0;
-    const B = (i & 4) ? 1 : 0;
-    const C = (i & 2) ? 1 : 0;
-    const D = (i & 1) ? 1 : 0;
+    const A = numVars >= 1 ? ((i & (1 << (numVars - 1))) ? 1 : 0) : 0;
+    const B = numVars >= 2 ? ((i & (1 << (numVars - 2))) ? 1 : 0) : 0;
+    const C = numVars >= 3 ? ((i & (1 << (numVars - 3))) ? 1 : 0) : 0;
+    const D = numVars >= 4 ? ((i & (1 << (numVars - 4))) ? 1 : 0) : 0;
 
     try {
       // Create a function that evaluates the expression for given A, B, C, D
@@ -88,10 +88,10 @@ export function generateTruthTable(minterms: number[], dontCares: number[] = [],
 
     table.push({
       m: i,
-      A: (i & 8) ? 1 : 0,
-      B: (i & 4) ? 1 : 0,
-      C: (i & 2) ? 1 : 0,
-      D: (i & 1) ? 1 : 0,
+      A: numVars >= 1 ? ((i & (1 << (numVars - 1))) ? 1 : 0) : 0,
+      B: numVars >= 2 ? ((i & (1 << (numVars - 2))) ? 1 : 0) : 0,
+      C: numVars >= 3 ? ((i & (1 << (numVars - 3))) ? 1 : 0) : 0,
+      D: numVars >= 4 ? ((i & (1 << (numVars - 4))) ? 1 : 0) : 0,
       out: output
     });
   }

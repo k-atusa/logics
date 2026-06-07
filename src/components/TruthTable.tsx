@@ -45,10 +45,10 @@ export const TruthTable: React.FC<TruthTableProps> = ({ minterms, dontCares, num
             <TableHeader className="sticky top-0 bg-muted/80 backdrop-blur-sm z-10">
               <TableRow>
                 <TableHead className="w-12 text-center border-r border-border/50">m</TableHead>
-                {numVars >= 4 && <TableHead className="text-center">A</TableHead>}
-                {numVars >= 3 && <TableHead className="text-center">B</TableHead>}
-                {numVars >= 2 && <TableHead className="text-center">C</TableHead>}
-                <TableHead className="text-center">D</TableHead>
+                {numVars >= 1 && <TableHead className="text-center">A</TableHead>}
+                {numVars >= 2 && <TableHead className="text-center">B</TableHead>}
+                {numVars >= 3 && <TableHead className="text-center">C</TableHead>}
+                {numVars >= 4 && <TableHead className="text-center">D</TableHead>}
                 <TableHead className="text-center border-l border-border/50 font-semibold">Out</TableHead>
               </TableRow>
             </TableHeader>
@@ -60,10 +60,10 @@ export const TruthTable: React.FC<TruthTableProps> = ({ minterms, dontCares, num
                   onClick={() => toggleRow(row.m, row.out)}
                 >
                   <TableCell className="text-center text-muted-foreground border-r border-border/50 font-mono text-xs">{row.m}</TableCell>
-                  {numVars >= 4 && <TableCell className="text-center font-mono">{row.A}</TableCell>}
-                  {numVars >= 3 && <TableCell className="text-center font-mono">{row.B}</TableCell>}
-                  {numVars >= 2 && <TableCell className="text-center font-mono">{row.C}</TableCell>}
-                  <TableCell className="text-center font-mono">{row.D}</TableCell>
+                  {numVars >= 1 && <TableCell className="text-center font-mono">{row.A}</TableCell>}
+                  {numVars >= 2 && <TableCell className="text-center font-mono">{row.B}</TableCell>}
+                  {numVars >= 3 && <TableCell className="text-center font-mono">{row.C}</TableCell>}
+                  {numVars >= 4 && <TableCell className="text-center font-mono">{row.D}</TableCell>}
                   <TableCell className={`text-center border-l border-border/50 font-bold font-mono ${
                     row.out === 1 ? 'text-green-500' : row.out === -1 ? 'text-yellow-500' : 'text-zinc-500'
                   }`}>

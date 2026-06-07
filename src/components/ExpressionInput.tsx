@@ -6,10 +6,11 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from './ui/
 
 interface ExpressionInputProps {
   value: string;
+  numVars: number;
   onParsed: (minterms: number[]) => void;
 }
 
-export const ExpressionInput: React.FC<ExpressionInputProps> = ({ value, onParsed }) => {
+export const ExpressionInput: React.FC<ExpressionInputProps> = ({ value, numVars, onParsed }) => {
   const [expr, setExpr] = useState(value);
   const [error, setError] = useState('');
 
@@ -24,7 +25,7 @@ export const ExpressionInput: React.FC<ExpressionInputProps> = ({ value, onParse
       return;
     }
     try {
-      const minterms = parseExpression(expr, 4);
+      const minterms = parseExpression(expr, numVars);
       onParsed(minterms);
       setError('');
     } catch (e: any) {
@@ -43,7 +44,7 @@ export const ExpressionInput: React.FC<ExpressionInputProps> = ({ value, onParse
       <CardHeader>
         <CardTitle className="text-lg">Boolean Expression</CardTitle>
         <CardDescription>
-          Enter a boolean expression using A, B, C, D. <br/>
+          Enter a boolean expression using {numVars >= 4 ? 'A, B, C, D' : numVars === 3 ? 'A, B, C' : 'A, B'}. <br/>
           Operators: AND (* or &), OR (+ or |), NOT (' or ! or ~), XOR (^). <br/>
           Examples: <code className="bg-muted px-1 py-0.5 rounded text-xs font-mono">A*B + C'</code> or <code className="bg-muted px-1 py-0.5 rounded text-xs font-mono">A(B+C)</code>
         </CardDescription>

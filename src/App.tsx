@@ -5,9 +5,9 @@ import { ExpressionInput } from './components/ExpressionInput'
 import { minimize, formatTerm } from './logic/minimizer'
 
 function App() {
+  const [numVars, setNumVars] = useState<number>(4);
   const [minterms, setMinterms] = useState<number[]>([]);
   const [dontCares, setDontCares] = useState<number[]>([]);
-  const numVars = 4; // Hardcoded to 4 variables
 
   // Memoize the minimized prime implicants
   const primeImplicants = useMemo(() => {
@@ -49,7 +49,32 @@ function App() {
       </header>
 
       <main className="max-w-5xl mx-auto space-y-6">
-        <ExpressionInput value={currentExpressionString} onParsed={handleExpressionParsed} />
+        <div className="flex flex-col items-center gap-4 mb-4">
+          <div className="flex items-center space-x-2">
+            <span className="text-sm font-medium text-muted-foreground">Variables:</span>
+            <div className="flex bg-muted/50 p-1 rounded-lg border border-border/50">
+              {[2, 3, 4].map(v => (
+                <button
+                  key={v}
+                  onClick={() => {
+                    setNumVars(v);
+                    setMinterms([]);
+                    setDontCares([]);
+                  }}
+                  className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
+                    numVars === v 
+                      ? 'bg-background text-foreground shadow-sm ring-1 ring-border' 
+                      : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                  }`}
+                >
+                  {v}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <ExpressionInput value={currentExpressionString} onParsed={handleExpressionParsed} numVars={numVars} />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
           <TruthTable

@@ -31,26 +31,54 @@ export const KarnaughMap: React.FC<KarnaughMapProps> = ({ minterms, dontCares, p
     });
   }, [primeImplicants]);
 
-  if (numVars !== 4) {
-    return (
-      <Card className="bg-card border-border/50">
-        <CardContent className="p-6 text-center text-muted-foreground">
-          Only 4-variable K-Map is visually supported currently.
-        </CardContent>
-      </Card>
-    );
+  let rowVals: number[];
+  let colVals: number[];
+  let rowLabel: string;
+  let colLabel: string;
+  let getMinterm: (row: number, col: number) => number;
+  let rowBits: number;
+  let colBits: number;
+
+  if (numVars === 2) {
+    rowVals = [0, 1];
+    colVals = [0, 1];
+    rowLabel = 'A';
+    colLabel = 'B';
+    rowBits = 1;
+    colBits = 1;
+    getMinterm = (row, col) => {
+      const A = (row & 1) ? 1 : 0;
+      const B = (col & 1) ? 1 : 0;
+      return A * 2 + B;
+    };
+  } else if (numVars === 3) {
+    rowVals = [0, 1];
+    colVals = [0, 1, 3, 2];
+    rowLabel = 'A';
+    colLabel = 'BC';
+    rowBits = 1;
+    colBits = 2;
+    getMinterm = (row, col) => {
+      const A = (row & 1) ? 1 : 0;
+      const B = (col & 2) ? 1 : 0;
+      const C = (col & 1) ? 1 : 0;
+      return A * 4 + B * 2 + C;
+    };
+  } else {
+    rowVals = [0, 1, 3, 2];
+    colVals = [0, 1, 3, 2];
+    rowLabel = 'AB';
+    colLabel = 'CD';
+    rowBits = 2;
+    colBits = 2;
+    getMinterm = (row, col) => {
+      const A = (row & 2) ? 1 : 0;
+      const B = (row & 1) ? 1 : 0;
+      const C = (col & 2) ? 1 : 0;
+      const D = (col & 1) ? 1 : 0;
+      return A * 8 + B * 4 + C * 2 + D;
+    };
   }
-
-  const rowVals = [0, 1, 3, 2]; // 00, 01, 11, 10
-  const colVals = [0, 1, 3, 2];
-
-  const getMinterm = (row: number, col: number) => {
-    const A = (row & 2) ? 1 : 0;
-    const B = (row & 1) ? 1 : 0;
-    const C = (col & 2) ? 1 : 0;
-    const D = (col & 1) ? 1 : 0;
-    return A * 8 + B * 4 + C * 2 + D * 1;
-  };
 
   const getCellLabel = (m: number) => {
     if (minterms.includes(m)) return '1';
@@ -82,12 +110,12 @@ export const KarnaughMap: React.FC<KarnaughMapProps> = ({ minterms, dontCares, p
                   <svg className="absolute inset-0 w-full h-full text-muted-foreground opacity-30 pointer-events-none" preserveAspectRatio="none">
                     <line x1="0" y1="0" x2="100%" y2="100%" stroke="currentColor" strokeWidth="1" />
                   </svg>
-                  <div className="absolute top-1 right-1.5 text-[10px] font-mono text-muted-foreground opacity-70">CD</div>
-                  <div className="absolute bottom-1 left-1.5 text-[10px] font-mono text-muted-foreground opacity-70">AB</div>
+                  <div className="absolute top-1 right-1.5 text-[10px] font-mono text-muted-foreground opacity-70">{colLabel}</div>
+                  <div className="absolute bottom-1 left-1.5 text-[10px] font-mono text-muted-foreground opacity-70">{rowLabel}</div>
                 </th>
                 {colVals.map(c => (
                   <th key={c} className="border border-border/50 p-2 font-mono text-sm tracking-widest text-muted-foreground bg-muted/30">
-                    {toBinaryString(c, 2)}
+                    {toBinaryString(c, colBits)}
                   </th>
                 ))}
               </tr>
@@ -96,7 +124,7 @@ export const KarnaughMap: React.FC<KarnaughMapProps> = ({ minterms, dontCares, p
               {rowVals.map((r) => (
                 <tr key={r}>
                   <th className="border border-border/50 p-2 font-mono text-sm tracking-widest text-muted-foreground bg-muted/30">
-                    {toBinaryString(r, 2)}
+                    {toBinaryString(r, rowBits)}
                   </th>
                   {colVals.map((c) => {
                     const m = getMinterm(r, c);
