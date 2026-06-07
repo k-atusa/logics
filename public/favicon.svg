@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <linearGradient id="glowGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#a855f7" />
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect x="1.5" y="1.5" width="29" height="29" rx="6" fill="#09090b" stroke="#27272a" stroke-width="1.5"/>
+  
+  <!-- Grid Lines -->
+  <line x1="16" y1="1.5" x2="16" y2="30.5" stroke="#27272a" stroke-width="1"/>
+  <line x1="1.5" y1="16" x2="30.5" y2="16" stroke="#27272a" stroke-width="1"/>
+
+  <!-- Values (0s and 1s) -->
+  <text x="8.75" y="8.75" fill="#ffffff" font-size="11" font-family="system-ui, -apple-system, sans-serif" text-anchor="middle" font-weight="900" dominant-baseline="central">1</text>
+  <text x="23.25" y="8.75" fill="#52525b" font-size="11" font-family="system-ui, -apple-system, sans-serif" text-anchor="middle" font-weight="bold" dominant-baseline="central">0</text>
+  
+  <text x="8.75" y="23.25" fill="#ffffff" font-size="11" font-family="system-ui, -apple-system, sans-serif" text-anchor="middle" font-weight="900" dominant-baseline="central">1</text>
+  <text x="23.25" y="23.25" fill="#52525b" font-size="11" font-family="system-ui, -apple-system, sans-serif" text-anchor="middle" font-weight="bold" dominant-baseline="central">0</text>
+
+  <!-- Optimization Loop (Left Column) -->
+  <rect x="3.75" y="3.75" width="10" height="24.5" rx="4" fill="url(#glowGrad)" fill-opacity="0.15" stroke="url(#glowGrad)" stroke-width="1.5"/>
+</svg>
