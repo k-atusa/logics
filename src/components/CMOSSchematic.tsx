@@ -15,7 +15,7 @@ const NMOS = ({ x, y, label }: { x: number, y: number, label: string }) => (
     <line x1={0} y1={-10} x2={0} y2={10} />  {/* Channel */}
     <line x1={-5} y1={-10} x2={-5} y2={10} /> {/* Gate plate */}
     <line x1={-15} y1={0} x2={-5} y2={0} />   {/* Gate terminal */}
-    <text x={-20} y={3} className="text-[10px] fill-current stroke-none text-end">{label}</text>
+    <text x={-18} y={4} textAnchor="end" className="text-[11px] font-bold fill-current stroke-none">{label}</text>
   </g>
 );
 
@@ -27,7 +27,7 @@ const PMOS = ({ x, y, label }: { x: number, y: number, label: string }) => (
     <line x1={-5} y1={-10} x2={-5} y2={10} /> {/* Gate plate */}
     <circle cx={-8} cy={0} r={3} />            {/* Inversion bubble */}
     <line x1={-15} y1={0} x2={-11} y2={0} />   {/* Gate terminal */}
-    <text x={-20} y={3} className="text-[10px] fill-current stroke-none text-end">{label}</text>
+    <text x={-18} y={4} textAnchor="end" className="text-[11px] font-bold fill-current stroke-none">{label}</text>
   </g>
 );
 
